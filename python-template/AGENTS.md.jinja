@@ -1,0 +1,26 @@
+# Coding-agent guidelines for {{ project_slug }}
+
+This project uses **{{ framework_name }}** as the agent framework. When editing this codebase:
+
+## Layout
+- `src/{{ project_slug_underscore }}/agents/` — orchestrator and sub-agent factories. Each is a function returning a configured agent.
+- `src/{{ project_slug_underscore }}/tools/` — `@tool`-decorated functions; treat as the agent's only side-effect surface.
+- `src/{{ project_slug_underscore }}/config/` — Pydantic settings (`settings.py`), model factory (`llm_client.py`), system prompts (`prompts.py`).
+- `src/{{ project_slug_underscore }}/ui/` — Streamlit components.
+
+## Conventions
+- Tools must be pure functions with type-annotated parameters and a docstring (the LLM reads the docstring as the tool description).
+- Never call the LLM client directly inside a tool. Tools return data; the LLM composes the answer.
+- Never hardcode credentials. Read all config from `Settings` (loaded from `.env`).
+- The `web_search` tool is **mocked** by default — wire to Tavily/Brave/SerpAPI before shipping.
+
+## Testing
+- Tools live in `tests/test_example_tools.py` and are unit-tested without invoking the LLM.
+- `tests/test_settings.py` verifies env-var loading.
+- `make test` runs the suite with coverage.
+
+## Quality gates
+- `make lint` — Ruff
+- `make typecheck` — ty
+- `make test` — pytest
+- pre-commit hooks run on every commit (installed by `make install`).

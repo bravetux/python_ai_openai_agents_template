@@ -1,0 +1,38 @@
+.PHONY: install run repl ui test lint typecheck format docs docker-build docker-run clean
+
+install:
+	uv sync --all-groups
+	uv run pre-commit install
+
+run:
+	uv run python -m {{ project_slug_underscore }} "Search for the latest population of Tokyo and divide it by 1000."
+
+repl:
+	uv run python -m {{ project_slug_underscore }} --repl
+
+ui:
+	uv run streamlit run app.py
+
+test:
+	uv run pytest
+
+lint:
+	uv run ruff check .
+
+typecheck:
+	uv run ty check src
+
+format:
+	uv run ruff format .
+
+docs:
+	uv run mkdocs serve
+
+docker-build:
+	docker build -f docker/Dockerfile -t {{ project_slug }}:latest .
+
+docker-run:
+	docker compose -f docker/docker-compose.yml up
+
+clean:
+	rm -rf .venv .pytest_cache .ruff_cache htmlcov dist build

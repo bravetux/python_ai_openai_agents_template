@@ -1,0 +1,49 @@
+# {{ project_slug }}
+
+> {{ project_description }}
+
+Built with **{{ framework_name }}** on Python 3.12.
+
+## Quick start
+
+```bash
+cp .env.example .env       # add your ANTHROPIC_API_KEY
+make install
+make run                   # CLI: runs the default research-assistant query
+make ui                    # Streamlit chat interface
+```
+
+## What's inside
+
+- **Orchestrator agent** — `src/{{ project_slug_underscore }}/agents/orchestrator.py`
+- **Researcher sub-agent** — `src/{{ project_slug_underscore }}/agents/example_agent.py`
+- **Tools** — `web_search` (mocked) and `calculator` in `src/{{ project_slug_underscore }}/tools/`
+- **Settings** — `src/{{ project_slug_underscore }}/config/settings.py` (Pydantic, env-driven)
+
+## Switching providers
+
+Edit `.env`:
+- `LLM_PROVIDER=anthropic` (default) — needs `ANTHROPIC_API_KEY`.
+- `LLM_PROVIDER=bedrock` — needs AWS credentials and region.
+- `LLM_PROVIDER=openai` — needs `OPENAI_API_KEY`. Not all frameworks support all providers; see the framework's docs.
+
+## Testing
+
+```bash
+make test
+make lint
+make typecheck
+```
+
+## Docs
+
+```bash
+make docs
+```
+
+## Docker
+
+```bash
+make docker-build
+make docker-run
+```

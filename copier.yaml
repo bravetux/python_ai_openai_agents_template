@@ -1,0 +1,41 @@
+package_name:
+    type: str
+    placeholder: my-agent-project
+    help: Name of the Python package.
+
+project_slug:
+    type: str
+    default: "{{ package_name.lower().replace(' ', '_').replace('_','-') }}"
+    when: false
+
+project_slug_underscore:
+    type: str
+    default: "{{ project_slug.replace('-','_') }}"
+    when: false
+
+project_description:
+    type: str
+    help: Description of the project.
+    default: "An agent project using the <FRAMEWORK_NAME> framework."
+
+github_username:
+    type: str
+    help: GitHub username or organization name.
+
+framework_name:
+    type: str
+    default: "OpenAI Agents SDK"
+    when: false
+
+_subdirectory: python-template
+
+_message_after_copy: |
+    Project "{{ project_slug }}" created.
+
+    Next steps:
+        cd {{ project_slug }}
+        cp .env.example .env       # add your ANTHROPIC_API_KEY
+        make install
+        make run
+
+_min_copier_version: "9.0.0"
